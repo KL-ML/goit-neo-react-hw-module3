@@ -1,0 +1,51 @@
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+.type {
+  color: var(--light-secondary-color);
+  text-transform: capitalize;
+}
+.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  border-radius: 36px;
+  color: white;
+  border: 1px solid;
+  padding: 0 8px;
+}
+.good {
+  color: var(--success-color);
+  border-color: var(--success-color);
+}
+.bad {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+.neutral {
+  color: var(--info-color);
+  border-color: var(--info-color);
+}
+.total {
+  color: var(--accent-primary-color);
+  border-color: var(--accent-primary-color);
+}
+.positive {
+  color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+.before {
+  display: inline-block;
+  border: 2px solid;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-right: 12px;
+}
