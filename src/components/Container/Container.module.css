@@ -1,15 +1,18 @@
-.tabletWrap {
+.outerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
 }
 @media (min-width: 768px) {
-  .tabletWrap {
+  .outerContainer {
     width: 100%;
     padding: 20px;
     border-radius: 12px;
     background-color: var(--dark-tertiary-color);
   }
 }
-.cardContainer {
+.innerContainer {
   border-radius: 12px;
   width: 100%;
   background-color: var(--dark-secondary-color);
