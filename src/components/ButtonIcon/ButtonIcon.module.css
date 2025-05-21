@@ -22,6 +22,7 @@
   color: var(--success-color);
   border-color: var(--success-color);
   opacity: 70%;
+  cursor: pointer;
 }
 .red {
   color: var(--danger-color);
@@ -32,4 +33,5 @@
   color: var(--danger-color);
   border-color: var(--danger-color);
   opacity: 70%;
+  cursor: pointer;
 }
