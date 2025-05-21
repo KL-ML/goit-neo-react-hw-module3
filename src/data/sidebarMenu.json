@@ -8,13 +8,13 @@
   {
     "id": 2,
     "title": "State and life cycle.",
-    "status": true,
+    "status": false,
     "link": "./"
   },
   {
     "id": 3,
     "title": "Forms.",
-    "status": false,
+    "status": true,
     "link": "./"
   },
   {
