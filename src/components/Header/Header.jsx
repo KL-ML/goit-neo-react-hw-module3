@@ -4,13 +4,18 @@ import HeaderTitle from '../HeaderTitle/HeaderTitle';
 import Logo from '../Logo/Logo';
 import css from './Header.module.css';
 
-export default function Header({ logoImgPath, onUpdate }) {
+export default function Header({
+  logoImgPath,
+  onUpdate,
+  moduleNumber,
+  moduleTitle,
+}) {
   return (
     <header className={css.header}>
       <Logo logoImgPath={logoImgPath} />
       <HeaderTitle
-        moduleNumber={2}
-        moduleTitle={'State and life cycle.'}
+        moduleNumber={moduleNumber}
+        moduleTitle={moduleTitle}
         onUpdate={onUpdate}
       />
     </header>
