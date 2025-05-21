@@ -15,8 +15,8 @@ export default function ButtonIcon({
   onDelete,
   id,
 }) {
-  function handleDelete(id) {
-    onDelete(id);
+  function handleClick(id) {
+    onDelete && onDelete(id);
   }
   return (
     <>
@@ -29,7 +29,7 @@ export default function ButtonIcon({
           red && css.red
         )}
         type={type}
-        onClick={() => handleDelete(id)}
+        onClick={() => handleClick(id)}
       >
         <Icon size={iconSize} className={css[iconVariant]} />
       </button>
