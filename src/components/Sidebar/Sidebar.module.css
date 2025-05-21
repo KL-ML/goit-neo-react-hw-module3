@@ -18,7 +18,6 @@
   gap: 32px;
 }
 .mobileMenu {
-  /* position: relative; */
   display: block;
   z-index: 1000;
   position: fixed;
