@@ -3,55 +3,76 @@ import Header from './Header/Header';
 import logoImgPath from '../images/logo.svg';
 import Main from './Main/Main';
 import Footer from './Footer/Footer';
-
-import Description from './Description/Description';
-import Options from './Options/Options';
-import Feedback from './Feedback/Feedback';
-import Notification from './Notification/Notification';
-
 import Backdrop from './Backdrop/Backdrop';
-
 import Sidebar from './Sidebar/Sidebar';
 import menuItems from '../data/sidebarMenu.json';
 
 import { useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import toast, { Toaster } from 'react-hot-toast';
 
-const feedbackInitModel = {
-  good: 0,
-  neutral: 0,
-  bad: 0,
-};
+import Description from './Description/Description';
+import ContactList from './ContactList/ContactList';
+import contacts from '../data/contacts.json';
+
+import SearchBox from './SearchBox/SearchBox';
+import ContactForm from './ContactForm/ContactForm';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { nanoid } from 'nanoid';
+import Container from './Container/Container';
 
 const homeWork = {
-  number: '2',
-  title: 'State and life cycle.',
+  number: '3',
+  title: 'Forms.',
 };
+
+const defaultContactsState = contacts;
 
 const App = () => {
   const [mobileMenuStatus, setMobileMenuStatus] = useState(false);
-  const [feedbacks, setFeedbacks] = useLocalStorage(
-    'saved-feedbacks',
-    feedbackInitModel
+  const [contactsState, setContactsState] = useLocalStorage(
+    'contacts',
+    defaultContactsState
   );
+  const [filter, setFilter] = useState('');
 
-  function updateModuleMenuStatus(mobileMenuStatus) {
+  //open-close mobile menu sidebar
+  function updateMobileMenuStatus(mobileMenuStatus) {
     setMobileMenuStatus((mobileMenuStatus = !mobileMenuStatus));
   }
 
-  function updateFeedback(feedbackType) {
-    setFeedbacks({ ...feedbacks, [feedbackType]: feedbacks[feedbackType] + 1 });
-  }
-
-  function resetFeedback() {
-    setFeedbacks(feedbackInitModel);
-  }
-
-  const totalFeedback = Object.values(feedbacks).reduce((a, b) => a + b, 0);
-
-  const positiveFeedback = Math.round(
-    (feedbacks['good'] / totalFeedback) * 100
+  //filter contacts list for search
+  const filtersdContacts = contactsState.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  //get and set values from SearchBox
+  function handleInput(value) {
+    setFilter(value);
+  }
+
+  //add new contact to contacts list
+  function handleAddNewContact(data) {
+    if (findContact(data.name)) {
+      toast.error('Contact with the same name already exists.');
+      return;
+    }
+    setContactsState([
+      ...contactsState,
+      { id: nanoid(), name: data.name, number: data.number },
+    ]);
+  }
+
+  //delete contact from comtact list
+  function handleDeleteContact(id) {
+    setContactsState(contactsState.filter(contact => contact.id != id));
+  }
+
+  //find contact in contact list by name
+  function findContact(name) {
+    return contactsState.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+  }
 
   return (
     <Section>
@@ -59,28 +80,35 @@ const App = () => {
         logoImgPath={logoImgPath}
         moduleNumber={homeWork.number}
         moduleTitle={homeWork.title}
-        onUpdate={updateModuleMenuStatus}
+        onUpdate={updateMobileMenuStatus}
       />
       <Main>
         <Description
-          title="Sip Happens Café"
-          description="Please leave your feedback about our service by selecting one of the options below."
+          title="Phonebook"
+          description="Please add your contacts in the phonebook by filling the form below."
         />
-        <Options
-          buttons={feedbacks}
-          onUpdate={updateFeedback}
-          total={totalFeedback}
-          reset={resetFeedback}
-        />
-        {totalFeedback === 0 ? (
-          <Notification />
+        <ContactForm addContact={handleAddNewContact} />
+
+        {contactsState.length === 0 ? (
+          <p>There are no any contacts yet.</p>
         ) : (
-          <Feedback
-            feedbacks={feedbacks}
-            total={totalFeedback}
-            positive={positiveFeedback}
-          />
+          <Container variant="outerContainer">
+            <SearchBox onInput={handleInput} inputValue={filter} />
+            {filtersdContacts.length === 0 && contactsState.length !== 0 ? (
+              <p>There are no contacts with your search.</p>
+            ) : (
+              <ContactList
+                contacts={filtersdContacts}
+                onDelete={handleDeleteContact}
+              />
+            )}
+          </Container>
         )}
+        <Toaster
+          toastOptions={{
+            removeDelay: 500,
+          }}
+        />
       </Main>
       <Footer />
       <Backdrop mobileMenu={mobileMenuStatus}>
@@ -90,7 +118,7 @@ const App = () => {
           mobileMenu={mobileMenuStatus}
           moduleNumber={homeWork.number}
           moduleTitle={homeWork.title}
-          onUpdate={updateModuleMenuStatus}
+          onUpdate={updateMobileMenuStatus}
         />
       </Backdrop>
     </Section>
